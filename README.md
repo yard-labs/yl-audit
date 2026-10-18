@@ -7,7 +7,7 @@ Read-only application audits for [Claude Code](https://code.claude.com). One com
 In Claude Code:
 
 ```
-/plugin marketplace add yard-labs/audit-skills
+/plugin marketplace add yard-labs/yl-audit
 /plugin install yl-audit@yard-labs
 /reload-plugins
 ```
