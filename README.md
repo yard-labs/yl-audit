@@ -18,7 +18,7 @@ To update later: `/plugin marketplace update yard-labs`, then `/plugin update yl
 
 | Skill | What it does |
 |---|---|
-| `/yl-audit:full` (or `/yl-audit:all`) | Runs the audits below that apply, in order, and writes one merged report. Start here. |
+| `/yl-audit:all` (or `/yl-audit:full`) | Runs the audits below that apply, in order, and writes one merged report. Start here. |
 | `/yl-audit:browser` | Reviews the running app in the browser: network calls, storage, cookies, headers, what each role receives. Never logs in for you and never changes data. |
 | `/yl-audit:code` | Security review of the codebase: auth, endpoint map by risk, dependencies and pinning, secrets in history, and a full code review. |
 | `/yl-audit:supabase` | How the app reaches Supabase, rated 0 to 5, with the SQL and dashboard checks to confirm it. |
@@ -32,7 +32,7 @@ Findings and targets are scaled to the team (solo, small team, larger team) and 
 Start with the full audit and give it whatever you have, a live URL, a repo path or both:
 
 ```
-/yl-audit:full https://app.example.com ~/code/example-app
+/yl-audit:all https://app.example.com ~/code/example-app
 ```
 
 What happens:
@@ -46,7 +46,7 @@ What happens:
 Re-run after fixes with `new only` to see just what changed:
 
 ```
-/yl-audit:full ~/code/example-app new only
+/yl-audit:all ~/code/example-app new only
 ```
 
 ### Running one audit on its own
