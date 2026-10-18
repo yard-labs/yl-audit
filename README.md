@@ -14,7 +14,13 @@ In Claude Code:
 /reload-plugins
 ```
 
-To update later: `/plugin marketplace update yard-labs`, then `/plugin update yl-audit`.
+### Update
+
+```
+/plugin marketplace update yard-labs
+/plugin update yl-audit
+/reload-plugins
+```
 
 ## Skills
 
