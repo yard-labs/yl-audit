@@ -4,10 +4,15 @@ Read-only application audits for [Claude Code](https://code.claude.com). One com
 
 ## Install
 
+In Claude Code:
+
 ```
 /plugin marketplace add yard-labs/audit-skills
 /plugin install yl-audit@yard-labs
+/reload-plugins
 ```
+
+To update later: `/plugin marketplace update yard-labs`, then `/plugin update yl-audit`.
 
 ## Skills
 
@@ -21,6 +26,42 @@ Read-only application audits for [Claude Code](https://code.claude.com). One com
 | `/yl-audit:observability-audit` | Whether failures would be noticed: error reporting, logging, alerting, job monitoring, third-party call handling. |
 
 Findings and targets are scaled to the team (solo, small team, larger team) and the product stage (validating, building the real thing, scaling workloads).
+
+## Usage
+
+Start with the full audit and give it whatever you have, a live URL, a repo path or both:
+
+```
+/yl-audit:app-audit https://app.example.com ~/code/example-app
+```
+
+What happens:
+
+1. **Intake.** One batch of questions up front: who signs in and as which role, team size and product stage, where production alerts go, a prefix for finding IDs, and where the report should go (chat, or a Notion page or doc you name). It checks which scanners are installed and asks before installing any.
+2. **Plan.** It says which audits apply and why. Supabase runs only if the app uses it; CI only if there is pipeline config.
+3. **Browser audit.** It pauses for **you** to sign in to the app in the browser. It never logs in for you, and it stops and tells you if any step would save, send or change something.
+4. **Code, Supabase, CI and observability audits** run read-only. This is the long part and launches several subagents.
+5. **Report.** One merged report: architecture and auth overview, an endpoint map ranked by risk, findings rated High, Medium or Low with fixes, architecture suggestions for your stage, what's working well, and a **To verify** list of dashboard and SQL checks for you to run and paste back.
+
+Re-run after fixes with `new only` to see just what changed:
+
+```
+/yl-audit:app-audit ~/code/example-app new only
+```
+
+### Running one audit on its own
+
+Each audit also works alone when you only need one view:
+
+```
+/yl-audit:browser-audit https://app.example.com
+/yl-audit:code-audit ~/code/example-app
+/yl-audit:supabase-audit ~/code/example-app
+/yl-audit:ci-audit ~/code/example-app "5 people, with staging"
+/yl-audit:observability-audit ~/code/example-app "solo, early"
+```
+
+The levelled audits (Supabase, CI, observability) score 0 to 5 and compare that with the level that suits your team and stage, so a solo founder isn't marked down for lacking what a larger team needs.
 
 ## Safety
 
