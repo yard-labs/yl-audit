@@ -1,4 +1,4 @@
-# Yard Labs audit skills
+# `/yl-audit`
 
 Read-only application audits for [Claude Code](https://code.claude.com). One command reviews the live app, the code, Supabase, CI/CD and observability, then cross-checks them into a single report. Every finding is checked in the source, rated by real impact, and anything that couldn't be confirmed comes with a "To verify" step saying exactly how to check it.
 
