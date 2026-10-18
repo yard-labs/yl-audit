@@ -75,6 +75,10 @@ Only audit systems you are authorised to review.
 - **Claude in Chrome** or the built-in browser for browser.
 - Optional scanners, installed only with your OK: `gitleaks`, `osv-scanner`, `semgrep`, `pip-audit`.
 
+## Disclaimer
+
+These audits are AI-assisted and read-only. A clean report is not a guarantee of security, compliance or reliability, and it is not a substitute for a professional penetration test. Use them only on systems you are authorised to review. The MIT licence covers the code; it does not permit using the Yard Labs name to endorse forks or derived work.
+
 ## Licence
 
 MIT. Built by [Yard Labs](https://yardlabs.co).
