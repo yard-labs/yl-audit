@@ -1,5 +1,5 @@
 ---
-name: supabase-audit
+name: supabase
 description: Audit how an application connects to Supabase by scanning its code (read-only). Flags direct browser connections, anon-key use, leaked keys, and Data API use with and without full row-level security, then levels the result 0 to 5. Two routes are equally secure (Data API with full RLS, or a backend with a least-privilege role); level 5 adds migrations in code applied by CI. Gives ordered steps to move up. Use when reviewing a Supabase app's security architecture, after a client code drop, or before adding features to a Supabase app.
 argument-hint: [path to repo, default current directory]
 ---
@@ -10,7 +10,7 @@ Scan a codebase and answer three questions: how does it reach the database, is t
 
 ## Rules
 
-Follow `../app-audit/references/rules.md`. On top of it:
+Follow `../full/references/rules.md`. On top of it:
 - To learn whether a JWT is an anon or service-role key, print only its `role` claim, never the token.
 - Take each To verify line from `references/settings-checks.md` where one exists; otherwise write it.
 
@@ -22,7 +22,7 @@ Follow `../app-audit/references/rules.md`. On top of it:
 
 **Both routes:** the service-role key exists only in scheduled and admin jobs, never in the browser or the request path; and **migrations live in code and run in CI before deploy**, not by hand and not from the dashboard.
 
-Neither route is a level below the other for security. Route B is still the recommended architecture (see Architecture suggestions in `../code-audit/references/report-template.md`): the database is reached only through a backend, at every product stage. Route B with an **ORM or query builder** (Drizzle, Prisma, Kysely or TypeORM) instead of `supabase-js` for data is the recommended direction when portability matters: Supabase becomes Auth, Storage and Postgres hosting, so moving host is a connection-string change, at about the same security and effort. Present it as a recommendation, never as a finding against a sound Route A app.
+Neither route is a level below the other for security. Route B is still the recommended architecture (see Architecture suggestions in `../code/references/report-template.md`): the database is reached only through a backend, at every product stage. Route B with an **ORM or query builder** (Drizzle, Prisma, Kysely or TypeORM) instead of `supabase-js` for data is the recommended direction when portability matters: Supabase becomes Auth, Storage and Postgres hosting, so moving host is a connection-string change, at about the same security and effort. Present it as a recommendation, never as a finding against a sound Route A app.
 
 ## Levels
 

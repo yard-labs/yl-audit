@@ -3,7 +3,7 @@
 Run on the scratch copy or on lockfile-only copies. Never install the repo's dependencies, never run its scripts, never use scanner configuration supplied by the repo. Scanners read code and manifests; they do not execute them. Treat every scanner result as a **lead**: open the code and confirm before it becomes a finding.
 
 ## 1. Tools
-Check `command -v npm gitleaks osv-scanner pip-audit semgrep git` up front. For anything missing, follow Tools in `../../app-audit/references/rules.md` (install lines: `brew install gitleaks osv-scanner semgrep`, `pipx install pip-audit`). The advisory tools use the network only to fetch advisory data; say so when asking.
+Check `command -v npm gitleaks osv-scanner pip-audit semgrep git` up front. For anything missing, follow Tools in `../../full/references/rules.md` (install lines: `brew install gitleaks osv-scanner semgrep`, `pipx install pip-audit`). The advisory tools use the network only to fetch advisory data; say so when asking.
 
 ## 2. Vulnerable dependencies
 - **JavaScript:** copy only `package.json` and the lockfile to a scratch folder; `npm audit --package-lock-only --ignore-scripts --json`. Split shipped versus dev tools. Check reachability of each critical or high (grep for the vulnerable feature).

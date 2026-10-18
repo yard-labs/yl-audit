@@ -1,18 +1,18 @@
 ---
-name: browser-audit
-description: Read-only review of a running web app through the browser. Observes what the app actually sends, stores and exposes: network calls and API endpoints, direct database calls, auth tokens and cache in browser storage, cookies, security headers, CORS, what changes after sign-out, and what data each role receives. Signed-out and signed-in passes, never logging in for you, never changing data. Use when you have a live URL to review, alongside code-audit, or when no code was supplied.
+name: browser
+description: Read-only review of a running web app through the browser. Observes what the app actually sends, stores and exposes: network calls and API endpoints, direct database calls, auth tokens and cache in browser storage, cookies, security headers, CORS, what changes after sign-out, and what data each role receives. Signed-out and signed-in passes, never logging in for you, never changing data. Use when you have a live URL to review, alongside code, or when no code was supplied.
 argument-hint: [live URL] [optional: role you are signed in as]
 ---
 
 # Browser audit
 
-Review the app as a user's browser sees it. This finds what the code review cannot: what really goes over the wire, what really sits in storage, what the headers really say, and what each role really receives. It feeds the endpoint map used by the `yl-audit:code-audit` skill.
+Review the app as a user's browser sees it. This finds what the code review cannot: what really goes over the wire, what really sits in storage, what the headers really say, and what each role really receives. It feeds the endpoint map used by the `yl-audit:code` skill.
 
 Before the first browser step, read the `chrome-browser` skill (Claude in Chrome) or the `built-in-browser` skill, whichever tool is in use, and follow its tool-loading and safety rules.
 
 ## Rules
 
-Follow `../app-audit/references/rules.md`. On top of it:
+Follow `../full/references/rules.md`. On top of it:
 
 - **No write actions in the browser.** Do not do any write, edit or create action. If anything comes close (a button that saves, submits, deletes, sends, creates, approves, or a form), **stop, and tell the user where you stopped: the path and the action.** Do not trigger alerts, confirms or dialogs.
 - **Never log in for the user.** Do not enter credentials, create accounts, solve CAPTCHAs, accept terms or grant permissions. Do not try to bypass sign-in or an access gateway. The user signs in; you work in their session only when they ask you to.
@@ -25,7 +25,7 @@ Follow `../app-audit/references/rules.md`. On top of it:
 
 ## Procedure
 
-1. **Prep.** Confirm the URL(s), authorisation, and which role the user is signed in as. Read any endpoint map or architecture overview from `yl-audit:code-audit`. Agree the stopping rule above.
+1. **Prep.** Confirm the URL(s), authorisation, and which role the user is signed in as. Read any endpoint map or architecture overview from `yl-audit:code`. Agree the stopping rule above.
 2. **Signed-out pass** (no credentials). Use `references/browser-checklist.md`.
    - Load the root and a few deep links. Record redirects (sign-in provider, access gateway).
    - Response headers on the page and a static file: content security policy, frame protection, HSTS, content-type options, referrer policy, permissions policy, CORS, cache headers.
@@ -45,10 +45,10 @@ Follow `../app-audit/references/rules.md`. On top of it:
 ## Report
 
 1. **Observed architecture:** the browser's view of what talks to what, with the credential on each connection.
-2. **Endpoints observed:** a table bucketed by auth mechanism and ranked by data risk exposure (same scale as `yl-audit:code-audit`'s endpoint map).
+2. **Endpoints observed:** a table bucketed by auth mechanism and ranked by data risk exposure (same scale as `yl-audit:code`'s endpoint map).
 3. **Headers table:** each header, value present or absent, and what it means.
 4. **Storage table:** what is held in the browser, for how long, and what survives sign-out.
-5. **Findings** in the `yl-audit:code-audit` format (ID, name, finding, criticality, risk, remediation), High to Low, with stage trade-offs labelled as pragmatic suggestions.
+5. **Findings** in the `yl-audit:code` format (ID, name, finding, criticality, risk, remediation), High to Low, with stage trade-offs labelled as pragmatic suggestions.
 6. **What is working well.**
 7. **Audit trail:** pages visited and actions taken.
 8. **Coverage and limits:** what was not reached, and any point where you stopped.

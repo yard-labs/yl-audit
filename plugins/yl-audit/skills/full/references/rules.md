@@ -1,6 +1,6 @@
 # Shared audit rules
 
-Every audit skill (`yl-audit:app-audit`, `yl-audit:browser-audit`, `yl-audit:code-audit`, `yl-audit:supabase-audit`, `yl-audit:ci-audit`, `yl-audit:observability-audit`) follows these rules, and every subagent it launches gets the constraints block below. Where a skill adds its own rules, the stricter one applies.
+Every audit skill (`yl-audit:full`, `yl-audit:browser`, `yl-audit:code`, `yl-audit:supabase`, `yl-audit:ci`, `yl-audit:observability`) follows these rules, and every subagent it launches gets the constraints block below. Where a skill adds its own rules, the stricter one applies.
 
 ## Safety
 
@@ -9,7 +9,7 @@ Every audit skill (`yl-audit:app-audit`, `yl-audit:browser-audit`, `yl-audit:cod
 - **Never print a secret.** Name the file, line and type, and write `[REDACTED]`. Name secrets by variable name only. If a subagent prints one into its own transcript, do not copy it anywhere.
 - **Never open real-data files** (CSV, xlsx, seed data, dumps, exports, customer files, office documents). Record that they exist, that they are tracked, their size, and for CSVs the header row only.
 - **No network calls**, except advisory lookups by the audit's own scanners (say so when asking to run them). Do not probe third-party platforms (database, hosting, identity or monitoring dashboards) or call their APIs with the app's keys. Live settings are checked by the user (see To verify).
-- **Client code stays on this machine.** No outside-model pass. See `yl-audit:code-audit` for how ce-code-review is kept local.
+- **Client code stays on this machine.** No outside-model pass. See `yl-audit:code` for how ce-code-review is kept local.
 - **Refer to people by role**, never by name. Use they/them if unsure.
 
 ## Tools
@@ -29,18 +29,18 @@ Set the stage at intake. It decides the target level in the levelled audits and 
 - **S2 Small team.** Three to eight people, one product.
 - **S3 Team with a pre-production environment.** Several people or teams, customers depend on it, someone is on call.
 
-Also set the **product stage**, which shapes the architecture suggestions in `../../code-audit/references/report-template.md`:
+Also set the **product stage**, which shapes the architecture suggestions in `../../code/references/report-template.md`:
 - **P1 Validating.** Testing the idea in the market.
 - **P2 Building the real thing.** Validated; building the MVP that needs hardening.
 - **P3 Scaling workloads.** Data pipelines, background jobs or queues in play, or workarounds for them.
 
-Rate honestly; do not inflate or deflate. Trade-offs that depend on team size or stage are rated Low and labelled: "Rated Low as a pragmatic suggestion for this stage, not as security advice. Re-review if the team or the sensitivity of the data grows." Severity comes from `../../code-audit/references/severity-guide.md`; findings use the format and categories in `../../code-audit/references/report-template.md`.
+Rate honestly; do not inflate or deflate. Trade-offs that depend on team size or stage are rated Low and labelled: "Rated Low as a pragmatic suggestion for this stage, not as security advice. Re-review if the team or the sensitivity of the data grows." Severity comes from `../../code/references/severity-guide.md`; findings use the format and categories in `../../code/references/report-template.md`.
 
 ## Output
 
 - Default: the report in the chat. If the user names a Notion page or document, follow its format and edit rules: fetch the latest version before every edit (the user edits too), prefer targeted edits, keep their wording, and re-read after a multi-part change.
-- **Legibility pass, once, at the end.** Run the final report through `humanizer:humanizer` in embedded mode. Under `yl-audit:app-audit` this happens once on the merged report, not in each audit. Tell it to keep, unchanged: finding IDs, severities, categories, evidence tags, `file:line` references, commands, SQL, dashboard paths, table structure, bold labels and the To verify / Expect / If not lines. It fixes prose only. Afterwards, check the finding count, IDs and severities match the pre-humanizer version.
-- Run on its own, an audit ends with one line: "For the full picture, run `yl-audit:app-audit`."
+- **Legibility pass, once, at the end.** Run the final report through `humanizer:humanizer` in embedded mode. Under `yl-audit:full` this happens once on the merged report, not in each audit. Tell it to keep, unchanged: finding IDs, severities, categories, evidence tags, `file:line` references, commands, SQL, dashboard paths, table structure, bold labels and the To verify / Expect / If not lines. It fixes prose only. Afterwards, check the finding count, IDs and severities match the pre-humanizer version.
+- Run on its own, an audit ends with one line: "For the full picture, run `yl-audit:full`."
 
 ## Constraints block (paste into every subagent prompt)
 

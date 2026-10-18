@@ -1,5 +1,5 @@
 ---
-name: ci-audit
+name: ci
 description: Read-only audit of an application's CI/CD pipeline from its repo config (GitHub Actions, Dockerfiles, hosting config, deploy and migration scripts). Checks quality gates (lint, format, typecheck, tests, dependency audit, build), PR practice and automated PR review, build-once artifacts promoted through environments, a pre-production environment, manual production trigger, pre-deploy migrations, feature flags, environment variables, short-lived branches and pipeline supply-chain hygiene. Levels the pipeline 0 to 5 against what is right for the team's stage, and gives ordered steps plus "to verify" checks for the settings the repo cannot show. Use when reviewing how an app is built, tested and shipped.
 argument-hint: [path to repo] [optional: team size and stage, e.g. "solo, early" or "5 people, with a test environment"]
 ---
@@ -10,7 +10,7 @@ Review how code gets from a commit to production. The goal is a pipeline that is
 
 ## Rules
 
-Follow `../app-audit/references/rules.md`. On top of it: never trigger a workflow. Platform settings (GitHub, the host, the registry) are not visible from the repo: mark them unverified with a To verify line each from `references/settings-checks.md`.
+Follow `../full/references/rules.md`. On top of it: never trigger a workflow. Platform settings (GitHub, the host, the registry) are not visible from the repo: mark them unverified with a To verify line each from `references/settings-checks.md`.
 
 ## What good looks like
 
@@ -49,4 +49,4 @@ Report the level reached and the level that is **right for the stage** (see the 
 5. **Branches and PRs** via read-only git: branch list and last-commit ages, branches far ahead of or behind main, stale or unmerged branches, the commit pattern (direct to main versus merges).
 6. **Level and target.** Report both.
 7. **Settings to verify.** Produce the table from `references/settings-checks.md` for everything the repo cannot show. Each row: **To verify:** do this (where). **Expect:** result. **If not:** meaning.
-8. **Report** with `yl-audit:code-audit`'s findings format: overview, pipeline diagram, check table, findings (ID, name, finding, criticality, risk, remediation) High to Low, ordered recommendations with effort tags and a suggested order, what is working well, the To verify list, and coverage limits.
+8. **Report** with `yl-audit:code`'s findings format: overview, pipeline diagram, check table, findings (ID, name, finding, criticality, risk, remediation) High to Low, ordered recommendations with effort tags and a suggested order, what is working well, the To verify list, and coverage limits.

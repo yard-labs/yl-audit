@@ -18,12 +18,12 @@ To update later: `/plugin marketplace update yard-labs`, then `/plugin update yl
 
 | Skill | What it does |
 |---|---|
-| `/yl-audit:app-audit` | Runs the audits below that apply, in order, and writes one merged report. Start here. |
-| `/yl-audit:browser-audit` | Reviews the running app in the browser: network calls, storage, cookies, headers, what each role receives. Never logs in for you and never changes data. |
-| `/yl-audit:code-audit` | Security review of the codebase: auth, endpoint map by risk, dependencies and pinning, secrets in history, and a full code review. |
-| `/yl-audit:supabase-audit` | How the app reaches Supabase, rated 0 to 5, with the SQL and dashboard checks to confirm it. |
-| `/yl-audit:ci-audit` | How code gets to production: quality gates, artifacts, environments, migrations, pipeline hygiene. |
-| `/yl-audit:observability-audit` | Whether failures would be noticed: error reporting, logging, alerting, job monitoring, third-party call handling. |
+| `/yl-audit:full` | Runs the audits below that apply, in order, and writes one merged report. Start here. |
+| `/yl-audit:browser` | Reviews the running app in the browser: network calls, storage, cookies, headers, what each role receives. Never logs in for you and never changes data. |
+| `/yl-audit:code` | Security review of the codebase: auth, endpoint map by risk, dependencies and pinning, secrets in history, and a full code review. |
+| `/yl-audit:supabase` | How the app reaches Supabase, rated 0 to 5, with the SQL and dashboard checks to confirm it. |
+| `/yl-audit:ci` | How code gets to production: quality gates, artifacts, environments, migrations, pipeline hygiene. |
+| `/yl-audit:observability` | Whether failures would be noticed: error reporting, logging, alerting, job monitoring, third-party call handling. |
 
 Findings and targets are scaled to the team (solo, small team, larger team) and the product stage (validating, building the real thing, scaling workloads).
 
@@ -32,7 +32,7 @@ Findings and targets are scaled to the team (solo, small team, larger team) and 
 Start with the full audit and give it whatever you have, a live URL, a repo path or both:
 
 ```
-/yl-audit:app-audit https://app.example.com ~/code/example-app
+/yl-audit:full https://app.example.com ~/code/example-app
 ```
 
 What happens:
@@ -46,7 +46,7 @@ What happens:
 Re-run after fixes with `new only` to see just what changed:
 
 ```
-/yl-audit:app-audit ~/code/example-app new only
+/yl-audit:full ~/code/example-app new only
 ```
 
 ### Running one audit on its own
@@ -54,11 +54,11 @@ Re-run after fixes with `new only` to see just what changed:
 Each audit also works alone when you only need one view:
 
 ```
-/yl-audit:browser-audit https://app.example.com
-/yl-audit:code-audit ~/code/example-app
-/yl-audit:supabase-audit ~/code/example-app
-/yl-audit:ci-audit ~/code/example-app "5 people, with staging"
-/yl-audit:observability-audit ~/code/example-app "solo, early"
+/yl-audit:browser https://app.example.com
+/yl-audit:code ~/code/example-app
+/yl-audit:supabase ~/code/example-app
+/yl-audit:ci ~/code/example-app "5 people, with staging"
+/yl-audit:observability ~/code/example-app "solo, early"
 ```
 
 The levelled audits (Supabase, CI, observability) score 0 to 5 and compare that with the level that suits your team and stage, so a solo founder isn't marked down for lacking what a larger team needs.
@@ -71,8 +71,8 @@ Only audit systems you are authorised to review.
 
 ## Requirements
 
-- **Claude Code** with the [compound-engineering](https://github.com/EveryInc/compound-engineering-plugin) plugin (code-audit runs its `ce-code-review`) and the [humanizer](https://github.com/blader/humanizer) plugin (final legibility pass).
-- **Claude in Chrome** or the built-in browser for browser-audit.
+- **Claude Code** with the [compound-engineering](https://github.com/EveryInc/compound-engineering-plugin) plugin (code runs its `ce-code-review`) and the [humanizer](https://github.com/blader/humanizer) plugin (final legibility pass).
+- **Claude in Chrome** or the built-in browser for browser.
 - Optional scanners, installed only with your OK: `gitleaks`, `osv-scanner`, `semgrep`, `pip-audit`.
 
 ## Licence

@@ -1,5 +1,5 @@
 ---
-name: observability-audit
+name: observability
 description: Read-only audit of how an application is observed in production: centralised logging, error reporting (Sentry preferred, equivalents such as Bugsnag, Rollbar, Honeybadger, Datadog, New Relic, Highlight, PostHog accepted), alerting, uptime and health checks, job and cron monitoring, whether calls to third-party services fail safely, and whether logs leak sensitive data or errors are silently swallowed. Levels observability 0 to 5 against what suits the team's stage, and gives ordered steps plus "to verify" checks for the settings the repo cannot show. Use when reviewing whether failures would be noticed, diagnosed and acted on.
 argument-hint: [path to repo] [optional: team size and stage, e.g. "solo, early" or "5 people, with a test environment"]
 ---
@@ -10,7 +10,7 @@ Ask one question: if this app broke at 2am, or quietly started losing data, woul
 
 ## Rules
 
-Follow `../app-audit/references/rules.md`. On top of it:
+Follow `../full/references/rules.md`. On top of it:
 - Never send a test error or trigger an alert.
 - Sentry DSNs, auth tokens and API keys: name the variable and where it is referenced. A browser DSN is public by design but still not repeated in the report.
 - Settings in external tools are unverified until the user checks (To verify lines from `references/settings-checks.md`). Never assume an alert exists because the SDK is installed.
@@ -51,4 +51,4 @@ Report the level reached and the level **right for the stage**. A solo early-sta
 5. **Silent failures, sensitive logging and third-party calls.** Run the scans in `references/practices.md` (swallowed errors, jobs that report success after a failure, log calls that include personal data, tokens, bodies or model output, error text returned to callers). Count and cite; never print the logged values.
 6. **Level and target.** Report both.
 7. **Settings to verify.** Build the table from `references/settings-checks.md` for everything the repo cannot show. Record the alert delivery answers as Docs evidence, unverified until the user confirms the integration settings.
-8. **Report** in the `yl-audit:code-audit` findings format: overview, observability diagram, check table, a third-party services table (Service | Used for | Timeout | Retry or fallback | API version pinned | Rate limit handling | To verify), findings (ID, name, finding, criticality, risk, remediation) High to Low, ordered recommendations with effort tags and a suggested order, what is working well, the To verify list, and coverage limits.
+8. **Report** in the `yl-audit:code` findings format: overview, observability diagram, check table, a third-party services table (Service | Used for | Timeout | Retry or fallback | API version pinned | Rate limit handling | To verify), findings (ID, name, finding, criticality, risk, remediation) High to Low, ordered recommendations with effort tags and a suggested order, what is working well, the To verify list, and coverage limits.

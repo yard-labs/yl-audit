@@ -18,7 +18,7 @@ Rate by real consequence to this client, not by the scanner's label.
 
 ## Low
 - Hardening gaps, information leaks in errors and logs, test and doc hygiene, staleness.
-- **Stage trade-offs** (no roles, no rate limits) when the users are a small, known group, for example an internal tool. Rate Low with the pragmatic-suggestion label from `../../app-audit/references/rules.md`. Keep cheap fixes (for example timeouts) in the remediation.
+- **Stage trade-offs** (no roles, no rate limits) when the users are a small, known group, for example an internal tool. Rate Low with the pragmatic-suggestion label from `../../full/references/rules.md`. Keep cheap fixes (for example timeouts) in the remediation.
 
 ## Rules of thumb
 - A critical-labelled package whose vulnerable feature is not used is Medium, not High. Say what you checked.
@@ -32,7 +32,7 @@ Rate by real consequence to this client, not by the scanner's label.
 - No lockfile for a shipped app, or a deploy that ignores it (`npm install` instead of `npm ci`): Medium. Builds are not reproducible and a poisoned release can be pulled in silently.
 - Python with unpinned or missing requirements (so it cannot be audited): Medium if it runs in production or against production data, Low for local one-off scripts. Say which.
 - Git or URL dependencies, `latest`, wildcard versions, install scripts from unfamiliar packages: Low to Medium by what runs.
-- CDN scripts without a version or integrity hash: Low. (Actions, images and Dependabot are rated by `yl-audit:ci-audit`.)
+- CDN scripts without a version or integrity hash: Low. (Actions, images and Dependabot are rated by `yl-audit:ci`.)
 - A tool that was skipped means the result is **unverified**, never clean.
 
 ## Library health

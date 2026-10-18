@@ -1,5 +1,5 @@
 ---
-name: code-audit
+name: code
 description: Security-focused, read-only review of a client or in-house codebase. Handles untrusted code safely, audits dependencies (npm audit, pip-audit, osv-scanner) and checks dependency pinning without installing anything, scans for secrets and history (gitleaks if installed), runs ce-code-review with its security reviewers on a local scratch copy (no outside model), verifies claims in the code, and writes a calibrated findings report with remediations and "to verify" steps. Use when given a codebase to assess, before a client report, or to re-check what is new after a change.
 argument-hint: [path to repo] [optional: file of known findings, or "new only"]
 ---
@@ -10,7 +10,7 @@ A repeatable, read-only security review of a codebase. It produces findings you 
 
 ## Rules
 
-Follow `../app-audit/references/rules.md` in every step and every subagent.
+Follow `../full/references/rules.md` in every step and every subagent.
 
 ## Procedure
 
@@ -26,10 +26,10 @@ Follow `../app-audit/references/rules.md` in every step and every subagent.
    - the constraints block from the rules, and an explicit prohibition on any external or cross-model review (the checkout config from step 6 is the backstop);
    - the intent: a full-tree security review of an application, not a pull request;
    - the architecture overview, the authentication mechanism and the endpoint map, with the instruction to start from the Critical and High exposure endpoints in the weakest buckets;
-   - the areas to cover: auth and authorisation on every route, identity taken from the request, shared-secret handling (timing-safe, fails closed), input validation, SSRF and path traversal, uploads, untrusted text steering AI actions, AI cost and rate limits, error text returned to callers, XSS and open redirects, exports; and, when there is no Supabase (which `yl-audit:supabase-audit` owns), the data layer: access rules, grants, raw query building;
+   - the areas to cover: auth and authorisation on every route, identity taken from the request, shared-secret handling (timing-safe, fails closed), input validation, SSRF and path traversal, uploads, untrusted text steering AI actions, AI cost and rate limits, error text returned to callers, XSS and open redirects, exports; and, when there is no Supabase (which `yl-audit:supabase` owns), the data layer: access rules, grants, raw query building;
    - the known findings.
    Make sure the security and adversarial reviewers run. Collect the report.
 10. **Verify before reporting.** For every High and Medium claim from the review or a scanner, open the cited lines and confirm. Drop or correct what does not hold, and say so. Mark each finding confirmed in code, plausible, or unverified. Update the endpoint map with anything the review found.
 11. **Merge and rate.** Deduplicate, map to High, Medium or Low with `references/severity-guide.md`, order High to Low, assign stable IDs.
-12. **Report.** Use `references/report-template.md`: architecture overview, authentication mechanism, endpoint map, then overview, findings table, ordered recommendations with effort tags, what is working well (always include real good practice), the To verify list, and the coverage limits. Then the legibility pass from the rules (skip it when run under `yl-audit:app-audit`, which does it once at the end).
+12. **Report.** Use `references/report-template.md`: architecture overview, authentication mechanism, endpoint map, then overview, findings table, ordered recommendations with effort tags, what is working well (always include real good practice), the To verify list, and the coverage limits. Then the legibility pass from the rules (skip it when run under `yl-audit:full`, which does it once at the end).
 13. **Anything new?** If the user supplied known findings or asked for "new only", report only what is new, plus any change to an existing rating, and say what was re-confirmed.

@@ -2,7 +2,7 @@
 
 Rate each: **pass**, **partial**, **fail**, **n/a for stage**, or **unverified** (needs a setting or a platform check). Cite `file:line`.
 
-Stages S1, S2 and S3 are defined in `../../app-audit/references/rules.md`.
+Stages S1, S2 and S3 are defined in `../../full/references/rules.md`.
 
 ## Checks
 
