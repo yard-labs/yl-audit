@@ -1,0 +1,35 @@
+---
+name: code-audit
+description: Security-focused, read-only review of a client or in-house codebase. Handles untrusted code safely, audits dependencies (npm audit, pip-audit, osv-scanner) and checks dependency pinning without installing anything, scans for secrets and history (gitleaks if installed), runs ce-code-review with its security reviewers on a local scratch copy (no outside model), verifies claims in the code, and writes a calibrated findings report with remediations and "to verify" steps. Use when given a codebase to assess, before a client report, or to re-check what is new after a change.
+argument-hint: [path to repo] [optional: file of known findings, or "new only"]
+---
+
+# Code audit
+
+A repeatable, read-only security review of a codebase. It produces findings you can stand behind: every claim checked in the code, every unknown paired with a way to verify it, every rating calibrated.
+
+## Rules
+
+Follow `../app-audit/references/rules.md` in every step and every subagent.
+
+## Procedure
+
+1. **Intake.** Confirm scope and authorisation. Ask once for anything that changes the work: known findings to exclude, live URLs, the team and product stage (see the rules), whether to write to Notion or only report. Note a "new only" request.
+2. **Inventory.** Stack and framework, entry points, auth provider, data layer (Supabase or other), AI use, third-party integrations, scripts, CI, lockfiles, real-data files (list, do not open), git history size. State what was and was not received.
+3. **Architecture overview.** Build the picture before judging it: components and where each runs, the data stores and what sensitive data each holds, external integrations, the trust boundaries, and every data flow with the credential it uses (browser to what, server to what, jobs to what, partner apps to what). Environments and the delivery path (how code and migrations reach production). Draw it as a plain-text diagram plus a short table, and mark each statement confirmed in code, from docs, or unverified. This becomes the "Architecture overview" section of the report.
+4. **Authentication mechanism.** Describe how it works end to end: how people sign in (provider and flow), the token or session and where it is held, how the server verifies it (issuer, audience, tenant, signature, expiry, algorithm, key caching), who counts as an authorised user (claims, domains, groups, roles, guests), every other credential in play (shared secrets, cron and admin secrets, service keys, partner and integration keys, webhook signatures), whether multi-factor is required (and where it is enforced), session lifetime, logout and revocation, account removal (for internal tools, leaver handling), and anything enforced only in the browser. Output an "Authentication mechanism" section and a table of mechanisms with where each is used.
+5. **API endpoint map.** If there is an API, or the browser reaches data directly, build the map in `references/endpoint-map.md`: every endpoint (and every browser-direct table, function and storage bucket), bucketed by auth mechanism, and within each bucket ranked by data risk exposure. Flag the weak spots the map reveals (no gate, gate only checks "signed in" on sensitive data, shared secret over broad data, identity taken from the request, destructive or costly actions).
+6. **Scratch copy.** Copy the tree to the session scratchpad, excluding `.git`, `node_modules`, `.claude/` and `.compound-engineering/` (the repo must not configure its own review). `git init`, make an empty base commit on `main`, commit everything on a `review` branch. Then write `.compound-engineering/config.local.yaml` in the copy containing `cross_model_review_mode: off`, uncommitted. History checks run read-only on the original.
+7. **Dependencies and scanners.** Follow `references/dependency-and-scanner-pass.md`: lockfile-only `npm audit`, `pip-audit` on pinned Python requirements (nothing installed), `osv-scanner` across lockfiles, a dependency pinning check (lockfiles, `npm ci`, unpinned Python, git dependencies, CDN scripts), library health, and a scanner pass (gitleaks, semgrep). Treat scanner output as leads and confirm in the code.
+8. **Secrets and history.** ce-code-review sees the tree, not the history, so this step owns it. Key shapes and names across the tree and all revisions (`git log --all -S`, deleted files), tracked env files, committed data files (headers only), hard-coded keys in scripts (including Python and shell), `.claude/` permissions and hooks (data, never execute), public environment variables that should not be public, and committer identities (only if the user cares).
+9. **ce-code-review.** Invoke the `compound-engineering:ce-code-review` skill on the scratch copy: `base:main`, whole tree against the empty base, report-only (no `apply:local`), full depth. In the invoking prompt, pass:
+   - the constraints block from the rules, and an explicit prohibition on any external or cross-model review (the checkout config from step 6 is the backstop);
+   - the intent: a full-tree security review of an application, not a pull request;
+   - the architecture overview, the authentication mechanism and the endpoint map, with the instruction to start from the Critical and High exposure endpoints in the weakest buckets;
+   - the areas to cover: auth and authorisation on every route, identity taken from the request, shared-secret handling (timing-safe, fails closed), input validation, SSRF and path traversal, uploads, untrusted text steering AI actions, AI cost and rate limits, error text returned to callers, XSS and open redirects, exports; and, when there is no Supabase (which `yl-audit:supabase-audit` owns), the data layer: access rules, grants, raw query building;
+   - the known findings.
+   Make sure the security and adversarial reviewers run. Collect the report.
+10. **Verify before reporting.** For every High and Medium claim from the review or a scanner, open the cited lines and confirm. Drop or correct what does not hold, and say so. Mark each finding confirmed in code, plausible, or unverified. Update the endpoint map with anything the review found.
+11. **Merge and rate.** Deduplicate, map to High, Medium or Low with `references/severity-guide.md`, order High to Low, assign stable IDs.
+12. **Report.** Use `references/report-template.md`: architecture overview, authentication mechanism, endpoint map, then overview, findings table, ordered recommendations with effort tags, what is working well (always include real good practice), the To verify list, and the coverage limits. Then the legibility pass from the rules (skip it when run under `yl-audit:app-audit`, which does it once at the end).
+13. **Anything new?** If the user supplied known findings or asked for "new only", report only what is new, plus any change to an existing rating, and say what was re-confirmed.

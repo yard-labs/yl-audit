@@ -1,0 +1,15 @@
+{
+  "name": "yard-labs",
+  "description": "Yard Labs plugins for Claude Code.",
+  "owner": {
+    "name": "Yard Labs",
+    "email": "info@yardlabs.co"
+  },
+  "plugins": [
+    {
+      "name": "yl-audit",
+      "source": "./plugins/yl-audit",
+      "description": "Read-only application audits orchestrated into one calibrated report."
+    }
+  ]
+}

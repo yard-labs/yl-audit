@@ -1,0 +1,10 @@
+{
+  "name": "yl-audit",
+  "version": "0.1.0",
+  "description": "Read-only application audits: one orchestrated report covering the live app, the code, Supabase, CI/CD and observability, with calibrated findings and a 'to verify' step for everything unconfirmed.",
+  "author": { "name": "Yard Labs", "email": "info@yardlabs.co", "url": "https://yardlabs.co" },
+  "homepage": "https://github.com/yard-labs/audit-skills",
+  "repository": "https://github.com/yard-labs/audit-skills",
+  "license": "MIT",
+  "keywords": ["security", "audit", "code-review", "supabase", "ci", "observability"]
+}
