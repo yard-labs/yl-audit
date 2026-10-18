@@ -1,5 +1,7 @@
 # `/yl-audit`
 
+[![Release](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fyard-labs%2Fyl-audit%2Fmain%2Fplugins%2Fyl-audit%2F.claude-plugin%2Fplugin.json&query=%24.version&label=release&color=blue)](plugins/yl-audit/.claude-plugin/plugin.json) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 Read-only application audits for [Claude Code](https://code.claude.com). One command reviews the live app, the code, Supabase, CI/CD and observability, then cross-checks them into a single report. Every finding is checked in the source, rated by real impact, and anything that couldn't be confirmed comes with a "To verify" step saying exactly how to check it.
 
 ## Install
