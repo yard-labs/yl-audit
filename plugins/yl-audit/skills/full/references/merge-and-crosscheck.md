@@ -12,14 +12,15 @@ Tag every statement and finding with where it was seen: **Live** (browser), **Co
 - **Docs-only claims** are never treated as confirmed.
 
 ## Merged outputs
+0. **Scorecard (first in the report):** the `## Scorecard` block from `report-template.md`. Pull the levels straight from the audits that ran (Supabase, CI, observability) and compute the architecture level from its ladder, each as `level / target` with a light. State overall risk, the team and product stage, the total findings with the High/Medium/Low split, and the by-category counts. A skipped audit is shown as "not run", never 0.
 1. **Architecture overview:** one diagram, with each connection tagged Live, Code or Docs.
 2. **Authentication mechanism:** from code, with the browser's view (what token is held, where, what the app sends).
 3. **Endpoint map:** union of code and traffic, bucketed by auth mechanism, ranked by data risk, with a column for evidence tags. Add rows the other source missed.
 4. **Supabase section** (if run): level, delivery checks, anon exposure.
 5. **Dependencies and pinning**, **secrets and history**, **scanner results**.
-6. **Findings:** one table with a **Category** column (the eight categories in `../../code/references/report-template.md`), unique IDs with the agreed prefix, High to Low, severity per `../../code/references/severity-guide.md`. Stage trade-offs are Low and labelled as pragmatic suggestions (see `rules.md`), with a note above the table.
+6. **Findings:** one table with a **Category** column (the eight categories in `report-template.md`), unique IDs with the agreed prefix, High to Low, severity per `severity-guide.md`. Stage trade-offs are Low and labelled as pragmatic suggestions (see `rules.md`), with a note above the table.
 7. **Recommendations** ordered by work with effort tags; open with real good practice.
-7a. **Architecture suggestions:** the section described in `../../code/references/report-template.md`, drawing on the Supabase level, the CI level and the observability level, scaled to the team and product stage.
+7a. **Architecture suggestions:** the section described in `report-template.md`, drawing on the Supabase level, the CI level and the observability level, scaled to the team and product stage.
 8. **What is working well**.
 9. **To verify (one consolidated list).** Deduplicate across audits. Group by who acts: project owner or client dashboard, the user running SQL or commands, the client (settings or access), a code drop. Each item: **To verify:** do this (where). **Expect:** result. **If not:** meaning and next step. Order by value (what would change a rating first).
 10. **Coverage and limits:** audits run and skipped with reasons, tools run and skipped, what the user must still check, the browser audit trail, and an explicit statement that live settings were not checked unless results were supplied.

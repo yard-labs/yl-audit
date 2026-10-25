@@ -49,4 +49,4 @@ Report the level reached and the level that is **right for the stage** (see the 
 5. **Branches and PRs** via read-only git: branch list and last-commit ages, branches far ahead of or behind main, stale or unmerged branches, the commit pattern (direct to main versus merges).
 6. **Level and target.** Report both.
 7. **Settings to verify.** Produce the table from `references/settings-checks.md` for everything the repo cannot show. Each row: **To verify:** do this (where). **Expect:** result. **If not:** meaning.
-8. **Report** with `yl-audit:code`'s findings format: overview, pipeline diagram, check table, findings (ID, name, finding, criticality, risk, remediation) High to Low, ordered recommendations with effort tags and a suggested order, what is working well, the To verify list, and coverage limits.
+8. **Report** in the shared findings format (`../full/references/report-template.md`): overview, pipeline diagram, check table, findings (ID, name, finding, criticality, risk, remediation) High to Low, ordered recommendations with effort tags and a suggested order, what is working well, the To verify list, and coverage limits.

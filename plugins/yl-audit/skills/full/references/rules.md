@@ -29,12 +29,12 @@ Set the stage at intake. It decides the target level in the levelled audits and 
 - **S2 Small team.** Three to eight people, one product.
 - **S3 Team with a pre-production environment.** Several people or teams, customers depend on it, someone is on call.
 
-Also set the **product stage**, which shapes the architecture suggestions in `../../code/references/report-template.md`:
+Also set the **product stage**, which shapes the architecture suggestions in `report-template.md`:
 - **P1 Validating.** Testing the idea in the market.
 - **P2 Building the real thing.** Validated; building the MVP that needs hardening.
 - **P3 Scaling workloads.** Data pipelines, background jobs or queues in play, or workarounds for them.
 
-Rate honestly; do not inflate or deflate. Trade-offs that depend on team size or stage are rated Low and labelled: "Rated Low as a pragmatic suggestion for this stage, not as security advice. Re-review if the team or the sensitivity of the data grows." Severity comes from `../../code/references/severity-guide.md`; findings use the format and categories in `../../code/references/report-template.md`.
+Rate honestly; do not inflate or deflate. Trade-offs that depend on team size or stage are rated Low and labelled: "Rated Low as a pragmatic suggestion for this stage, not as security advice. Re-review if the team or the sensitivity of the data grows." Severity comes from `severity-guide.md`; findings use the format and categories in `report-template.md`.
 
 ## Output
 

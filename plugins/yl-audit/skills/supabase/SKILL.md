@@ -22,7 +22,7 @@ Follow `../full/references/rules.md`. On top of it:
 
 **Both routes:** the service-role key exists only in scheduled and admin jobs, never in the browser or the request path; and **migrations live in code and run in CI before deploy**, not by hand and not from the dashboard.
 
-Neither route is a level below the other for security. Route B is still the recommended architecture (see Architecture suggestions in `../code/references/report-template.md`): the database is reached only through a backend, at every product stage. Route B with an **ORM or query builder** (Drizzle, Prisma, Kysely or TypeORM) instead of `supabase-js` for data is the recommended direction when portability matters: Supabase becomes Auth, Storage and Postgres hosting, so moving host is a connection-string change, at about the same security and effort. Present it as a recommendation, never as a finding against a sound Route A app.
+Neither route is a level below the other for security. Route B is still the recommended architecture (see Architecture suggestions in `../full/references/report-template.md`): the database is reached only through a backend, at every product stage. Route B with an **ORM or query builder** (Drizzle, Prisma, Kysely or TypeORM) instead of `supabase-js` for data is the recommended direction when portability matters: Supabase becomes Auth, Storage and Postgres hosting, so moving host is a connection-string change, at about the same security and effort. Present it as a recommendation, never as a finding against a sound Route A app.
 
 ## Levels
 

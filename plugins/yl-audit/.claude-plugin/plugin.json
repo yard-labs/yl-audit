@@ -1,6 +1,6 @@
 {
   "name": "yl-audit",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Read-only application audits: one orchestrated report covering the live app, the code, Supabase, CI/CD and observability, with calibrated findings and a 'to verify' step for everything unconfirmed.",
   "author": {
     "name": "Yard Labs",

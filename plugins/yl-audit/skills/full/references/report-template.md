@@ -1,5 +1,27 @@
 # Report template
 
+## Scorecard
+A one-screen summary at the very top of the report. Show a row only for an audit that actually ran; a skipped audit is named "not run", never scored 0.
+
+**Overall risk:** Low / Medium / High / Critical, with one line on why (the worst confirmed finding).
+
+**Stage:** team S1/S2/S3 . product P1/P2/P3 (see `rules.md`).
+
+| Dimension | Level | Right for stage |
+|---|---|---|
+| Architecture | n / 5 | t |
+| Data connection (Supabase) | n / 5 | t |
+| CI/CD | n / 5 | t |
+| Observability | n / 5 | t |
+
+Give each row a light: green when level >= target, amber one below, red two or more below (or any level-0 condition). Architecture uses the ladder below; the other three come from their own audits. Where Supabase is in use, its connection level feeds architecture's connection pillar, so the two never disagree.
+
+**Findings:** N total: H High, M Medium, L Low. Then the by-category count table from the Categories section (only categories with findings).
+
+
+## Overview (table: Field | Detail)
+What is it | Where it lives | Data present | Access needed | Audit inputs (what was received, which checks, what was not done).
+
 ## Architecture overview
 A plain-text diagram and short table: components and hosting, data stores and what sensitive data each holds, external integrations, trust boundaries, each data flow with the credential it uses, environments, and how code and migrations reach production. Mark each statement confirmed in code, from docs, or unverified.
 
@@ -7,10 +29,7 @@ A plain-text diagram and short table: components and hosting, data stores and wh
 How people sign in, the token or session and where it is held, how the server verifies it, who counts as an authorised user (claims, groups, roles, guests), every other credential in play, session lifetime and revocation, account removal (for internal tools, leaver handling), and anything enforced only in the browser. Include a table of mechanisms and where each is used.
 
 ## API endpoint map
-The table and summary matrix from `endpoint-map.md`: every endpoint bucketed by auth mechanism, ranked by data risk exposure, with the weak spots listed and tied to findings.
-
-## Overview (table: Field | Detail)
-What is it | Where it lives | Data present | Access needed | Audit inputs (what was received, which checks, what was not done).
+The table and summary matrix from `../../code/references/endpoint-map.md`: every endpoint bucketed by auth mechanism, ranked by data risk exposure, with the weak spots listed and tied to findings.
 
 ## Findings (table)
 ID | Name | Category | Finding | Criticality (High, Medium, Low) | Risk | Remediation
@@ -32,6 +51,20 @@ A short, separate section from the findings: how the system should look, given w
 - **Delivery.** Quality gates on every push, migrations in code applied automatically before deploy, a build-once artifact promoted through environments, a pre-production environment (staging and test mean the same thing: if one exists, keep it; if not, add one soon) with its own database and secrets, no more than two environments in total for most teams at this stage because a third is too many to keep in step, a manual or approved production trigger, feature flags where releases are risky, configuration through environment variables.
 - **Observability.** Sentry or an equivalent on every tier, central structured logs, alerts routed to a named owner by environment and criticality, job heartbeats.
 - **Ownership.** Code and accounts under the company, not personal accounts or one laptop.
+### Architecture level (0 to 5), for the scorecard
+Score the system as the **weakest** of four pillars: connection model, where secrets live, access control, and identity/ownership. One weak pillar caps the score.
+
+| Level | Meaning |
+|---|---|
+| 0 Exposed | Secrets in the browser or repo, or sensitive data reachable with no auth. |
+| 1 Client-trust | SPA or static site reaches the database or third-party APIs directly; security lives in the client; weak or missing data rules. |
+| 2 Browser-direct, enforced | Browser talks to the database directly, but every table or route has real server-side rules (full RLS or a gateway); secrets server-side. Supabase Route A done right. |
+| 3 Server boundary | A backend (even lightweight) owns data access and verifies the caller; least-privilege where it touches data; one sign-in provider with roles. |
+| 4 Hardened | Dedicated backend and an established framework; least-privilege connections; environments and ownership in order; roles or ownership and leaver handling. |
+| 5 Scales cleanly | Workloads split out (jobs, queues, pipelines) on a real cloud where needed; portability (ORM or abstraction); defence in depth (boundary and data rules); nothing privileged in the request path. |
+
+Target by product stage: **P1 -> 2, P2 -> 3, P3 -> 4** (each is also the minimum; below it is a finding). **Sensitivity bump:** if the app holds special-category, health or financial data at scale, raise the target by one. Report architecture as `level / target` with a light, same as the other dimensions.
+
 Say what to do now, what to do when the team, the product stage or the sensitivity of the data grows, and what to leave alone. Label stage items as pragmatic suggestions, not security advice.
 
 ## Recommendations

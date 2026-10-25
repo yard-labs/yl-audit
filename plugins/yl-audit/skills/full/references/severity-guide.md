@@ -18,7 +18,7 @@ Rate by real consequence to this client, not by the scanner's label.
 
 ## Low
 - Hardening gaps, information leaks in errors and logs, test and doc hygiene, staleness.
-- **Stage trade-offs** (no roles, no rate limits) when the users are a small, known group, for example an internal tool. Rate Low with the pragmatic-suggestion label from `../../full/references/rules.md`. Keep cheap fixes (for example timeouts) in the remediation.
+- **Stage trade-offs** (no roles, no rate limits) when the users are a small, known group, for example an internal tool. Rate Low with the pragmatic-suggestion label from `rules.md`. Keep cheap fixes (for example timeouts) in the remediation.
 
 ## Rules of thumb
 - A critical-labelled package whose vulnerable feature is not used is Medium, not High. Say what you checked.
