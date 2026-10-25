@@ -38,7 +38,10 @@ Rate honestly; do not inflate or deflate. Trade-offs that depend on team size or
 
 ## Output
 
-- Default: the report in the chat. If the user names a Notion page or document, follow its format and edit rules: fetch the latest version before every edit (the user edits too), prefer targeted edits, keep their wording, and re-read after a multi-part change.
+- **Two output types, asked at intake: a Markdown file (default) or a shareable artifact.**
+  - **Markdown file:** write the report to `audit-report.md` in the repo, or a path the user gives. Stays on the machine; the default, and the right choice for an engineering handover.
+  - **Artifact:** publish the report as a claude.ai page (it renders the scorecard and tables well) and give the user the link. This sends the findings off the machine to claude.ai, so use it only for a system the user owns or is authorised to share; confirm before publishing a report on a third party's code. Most audit runs are a client on their own system, where this is fine.
+  - Also print the headline and scorecard in the chat either way, so there is always something to read inline.
 - **Legibility pass, once, at the end.** Run the final report through `humanizer:humanizer` in embedded mode. Under `yl-audit:full` this happens once on the merged report, not in each audit. Tell it to keep, unchanged: finding IDs, severities, categories, evidence tags, `file:line` references, commands, SQL, dashboard paths, table structure, bold labels and the To verify / Expect / If not lines. It fixes prose only. Afterwards, check the finding count, IDs and severities match the pre-humanizer version.
 - Run on its own, an audit ends with one line: "For the full picture, run `yl-audit:full`."
 

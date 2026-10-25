@@ -20,7 +20,7 @@ One run, one report. Order: **browser, then code, then Supabase if it is relevan
    - Repo path(s). Whether history is included.
    - Known findings to exclude, or "new only".
    - An ID prefix for findings (for example `ACME`).
-   - Output: in the chat, or a named Notion page or document.
+   - Output type: a Markdown file (default, written to the repo or a given path) or a shareable artifact (a claude.ai page; confirm it is a system the user may share).
    - Whether the user can run the Supabase and settings checks and paste results back.
    - Team size and stage (S1, S2 or S3 in the rules), product stage (P1, P2 or P3), and whether pull requests are used.
    - Where production alerts go today, and who reads them.
@@ -33,7 +33,7 @@ One run, one report. Order: **browser, then code, then Supabase if it is relevan
 6. **CI audit** (whenever there is a repo). Invoke `yl-audit:ci` with the stage from intake, the code audit's findings, the Supabase audit's delivery checks (migrations in code, applied in CI, RLS checks), and any pipeline facts the browser saw (deployed version, headers). Collect: the pipeline diagram, level and target level, check table, findings, and the settings to verify. If the repo has no workflows, Dockerfiles or hosting config at all, it has no CI/CD: report level 0 against the stage target rather than skipping, because "no pipeline" is itself the finding.
 7. **Observability audit (always last).** Invoke `yl-audit:observability` with the stage and alert answers from intake, the code audit's findings on logging, swallowed errors and third-party calls, the CI audit's view of releases and source maps, the Supabase audit's view of log retention, database metrics and alert settings, and anything the browser saw (front-end SDK loading, requests to an error tool, public source maps). Collect: the observability diagram, level and target level, check table, findings, and the settings to verify.
 8. **Cross-check and merge.** Follow `references/merge-and-crosscheck.md`: reconcile the audits, mark corroboration, flag contradictions, merge the endpoint map, consolidate the To verify items, deduplicate and rate.
-9. **Report.** One report in the shared report template (`references/report-template.md`), extended per the merge reference, then the legibility pass from the rules (once, on the merged report). Deliver it where the user said.
+9. **Report.** One report in the shared report template (`references/report-template.md`), extended per the merge reference, then the legibility pass from the rules (once, on the merged report). Deliver it as the output type chosen at intake (Markdown file or artifact; see `references/rules.md`), and always print the headline and scorecard in the chat.
 10. **Close.** List what is still unverified and who has to act (client dashboard, project owner, the user running SQL or commands). Offer a "new only" re-run after fixes.
 
 ## If something is missing
