@@ -43,7 +43,7 @@ Report the level reached and the level that is **right for the stage** (see the 
 ## Procedure
 
 1. **Intake.** Ask once: team size and stage, whether PRs are used, hosting, database, whether containers are intended, known findings. Use the answer to set the target level.
-2. **Inventory.** `.github/workflows/*`, Dockerfiles and compose files, hosting config (`vercel.json`, `netlify.toml`, `fly.toml`, `render.yaml`, `Procfile`), deploy and migration scripts, package scripts, `.env*.example`, Dependabot or Renovate config, PR templates, CODEOWNERS, feature-flag libraries.
+2. **Inventory.** `.github/workflows/*`, Dockerfiles and compose files, hosting config (`vercel.json`, `netlify.toml`, `fly.toml`, `render.yaml`, `Procfile`), deploy and migration scripts, package scripts, `.env*.example`, Dependabot or Renovate config, PR templates, CODEOWNERS, feature-flag libraries. If none of these exist, the repo has no CI/CD: report **level 0** against the stage target and treat "no pipeline" as the finding, rather than reporting nothing.
 3. **Map the pipeline.** Draw a plain-text diagram from commit to production: triggers, jobs, artifacts, environments, who or what can trigger production, and where migrations run. Mark each element Code, Config or Docs.
 4. **Evaluate** each check in `references/practices.md` with `file:line` evidence: pass, partial, fail, not applicable for the stage, or unverified.
 5. **Branches and PRs** via read-only git: branch list and last-commit ages, branches far ahead of or behind main, stale or unmerged branches, the commit pattern (direct to main versus merges).

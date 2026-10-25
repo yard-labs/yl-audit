@@ -1,12 +1,12 @@
 ---
 name: full
-description: Run a full read-only security audit of an application end to end by orchestrating the browser audit (live app), code audit (source), Supabase audit (only if Supabase is used), CI audit (only if CI/CD config exists) and finally the observability audit (logging, error reporting and alerting), then cross-checking the results and writing one report. Use when you have a live URL, a codebase, or both, and want a single calibrated findings report with every unverified item paired with a way to verify it.
+description: Run a full read-only security audit of an application end to end by orchestrating the browser audit (live app), code audit (source), Supabase audit (only if Supabase is used), CI audit (always run when there is a repo; no pipeline config is level 0) and finally the observability audit (logging, error reporting and alerting), then cross-checking the results and writing one report. Use when you have a live URL, a codebase, or both, and want a single calibrated findings report with every unverified item paired with a way to verify it.
 argument-hint: [live URL] [path to repo] [optional: known findings file, or "new only"]
 ---
 
 # Full audit
 
-One run, one report. Order: **browser, then code, then Supabase if it is relevant, then CI/CD if there is pipeline config, and observability last**.
+One run, one report. Order: **browser, then code, then Supabase if it is relevant, then CI/CD when there is a repo, and observability last**.
 
 ## Rules
 
@@ -30,7 +30,7 @@ One run, one report. Order: **browser, then code, then Supabase if it is relevan
 3. **Browser audit** (if a URL). Invoke `yl-audit:browser`. The user signs in; you do not. Keep its audit trail. Collect: observed architecture, endpoints seen (with credential kind), headers, storage, data over-sent, findings tagged **Live**, and any Supabase traffic.
 4. **Code audit** (if a repo). Invoke `yl-audit:code`, passing the browser's observations (endpoints seen, headers, storage, Supabase traffic) so the endpoint map starts with real traffic, plus the known findings. Collect: architecture, authentication mechanism, endpoint map, dependency and pinning results, secrets and history, review findings, and the verified findings.
 5. **Supabase audit** (only if relevant). Invoke `yl-audit:supabase` with the code, the endpoint map and the browser's Supabase observations (which key, which calls, what the bundle held). Collect: level 0 to 5, delivery checks, anon exposure, and the settings table with its To verify lines.
-6. **CI audit** (only if the repo has pipeline config such as workflows, Dockerfiles or hosting config). Invoke `yl-audit:ci` with the stage from intake, the code audit's findings, the Supabase audit's delivery checks (migrations in code, applied in CI, RLS checks), and any pipeline facts the browser saw (deployed version, headers). Collect: the pipeline diagram, level and target level, check table, findings, and the settings to verify.
+6. **CI audit** (whenever there is a repo). Invoke `yl-audit:ci` with the stage from intake, the code audit's findings, the Supabase audit's delivery checks (migrations in code, applied in CI, RLS checks), and any pipeline facts the browser saw (deployed version, headers). Collect: the pipeline diagram, level and target level, check table, findings, and the settings to verify. If the repo has no workflows, Dockerfiles or hosting config at all, it has no CI/CD: report level 0 against the stage target rather than skipping, because "no pipeline" is itself the finding.
 7. **Observability audit (always last).** Invoke `yl-audit:observability` with the stage and alert answers from intake, the code audit's findings on logging, swallowed errors and third-party calls, the CI audit's view of releases and source maps, the Supabase audit's view of log retention, database metrics and alert settings, and anything the browser saw (front-end SDK loading, requests to an error tool, public source maps). Collect: the observability diagram, level and target level, check table, findings, and the settings to verify.
 8. **Cross-check and merge.** Follow `references/merge-and-crosscheck.md`: reconcile the audits, mark corroboration, flag contradictions, merge the endpoint map, consolidate the To verify items, deduplicate and rate.
 9. **Report.** One report in the code audit's report template (`../code/references/report-template.md`), extended per the merge reference, then the legibility pass from the rules (once, on the merged report). Deliver it where the user said.
