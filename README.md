@@ -30,7 +30,7 @@ In Claude Code:
 | `/yl-audit:browser` | Reviews the running app in the browser: network calls, storage, cookies, headers, what each role receives. Never logs in for you and never changes data. |
 | `/yl-audit:code` | Security review of the codebase: auth, endpoint map by risk, dependencies and pinning, secrets in history, and a full code review. |
 | `/yl-audit:supabase` | How the app reaches Supabase, rated 0 to 5, with the SQL and dashboard checks to confirm it. |
-| `/yl-audit:ci` | How code gets to production: quality gates, artifacts, environments, migrations, pipeline hygiene. |
+| `/yl-audit:ci` | How code gets to production: git hooks, quality gates, secret scanning, vulnerability handling, artifacts, environments, migrations, pipeline hygiene. Compares several repos side by side. |
 | `/yl-audit:observability` | Whether failures would be noticed: error reporting, logging, alerting, job monitoring, third-party call handling. |
 
 Findings and targets are scaled to the team (solo, small team, larger team) and the product stage (validating, building the real thing, scaling workloads).

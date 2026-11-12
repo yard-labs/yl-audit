@@ -16,5 +16,8 @@ Give the user these checks. Do not run them. Confirm names and paths against cur
 | Deploy hooks and tokens | the host and GitHub | List deploy hooks and who holds deploy tokens | Tokens in environment secrets; hooks not exposed in the repo |
 | Registry settings | the registry (for example GitHub Packages) | Read tag immutability, retention, scanning | Immutable tags or digests used for deploys; retention set; scanning on |
 | Cloud trust | cloud IAM | Read the GitHub trust relationship | OIDC trust limited to the repo and environment; no long-lived keys |
-| Dependabot | GitHub > Settings > Code security | Read alerts and update settings | Alerts and version updates on for every ecosystem |
+| Dependabot alerts | GitHub > Settings > Code security | Read the alerts setting | On |
+| Dependabot security updates | same | Read the security updates setting | On, so fix PRs open automatically. If off because main is gated, say so and confirm someone reviews alerts instead |
+| Dependabot version updates | same, and `.github/dependabot.yml` | Read which ecosystems are configured | Every ecosystem in the repo, including Docker and GitHub Actions |
+| Secret scanning and push protection | same | Read the secret scanning setting | On where available. For private repos it is a paid add-on: if off for cost, mark it n/a and rely on gitleaks (C26, H3) |
 | Notifications | GitHub or chat integration | Confirm who is told when a workflow fails | A named person or channel |
