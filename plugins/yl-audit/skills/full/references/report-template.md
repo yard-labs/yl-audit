@@ -11,10 +11,10 @@ A one-screen summary at the very top of the report. Show a row only for an audit
 |---|---|---|
 | Architecture | n / 5 | t |
 | Data connection (Supabase) | n / 5 | t |
-| CI/CD | n / 5 | t |
+| CI/CD | n / 5 (weakest: pillar) | t of that pillar |
 | Observability | n / 5 | t |
 
-Give each row a light: green when level >= target, amber one below, red two or more below (or any level-0 condition). Architecture uses the ladder below; the other three come from their own audits. Where Supabase is in use, its connection level feeds architecture's connection pillar, so the two never disagree.
+Give each row a light: green when level >= target, amber one below, red two or more below (or any level-0 condition). CI/CD is scored on three pillars (gates, security, delivery; see the CI skill): show the lowest pillar and its target, and give the row the worst light of the three pillars. The pillar table goes in the CI section. Architecture uses the ladder below; the other three come from their own audits. Where Supabase is in use, its connection level feeds architecture's connection pillar, so the two never disagree.
 
 **Findings:** N total: H High, M Medium, L Low. Then the by-category count table from the Categories section (only categories with findings).
 

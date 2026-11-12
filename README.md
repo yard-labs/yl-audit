@@ -30,7 +30,7 @@ In Claude Code:
 | `/yl-audit:browser` | Reviews the running app in the browser: network calls, storage, cookies, headers, what each role receives. Never logs in for you and never changes data. |
 | `/yl-audit:code` | Security review of the codebase: auth, endpoint map by risk, dependencies and pinning, secrets in history, and a full code review. |
 | `/yl-audit:supabase` | How the app reaches Supabase, rated 0 to 5, with the SQL and dashboard checks to confirm it. |
-| `/yl-audit:ci` | How code gets to production: git hooks, quality gates, secret scanning, vulnerability handling, artifacts, environments, migrations, pipeline hygiene. Compares several repos side by side. |
+| `/yl-audit:ci` | How code gets to production, scored on three pillars: gates (git hooks, quality gates, migrations, build output, automated PR review), security (secret scanning, dependency audits, Dependabot, pins, static analysis) and delivery (artifacts, environments, production trigger, rollback). Compares several repos side by side. |
 | `/yl-audit:observability` | Whether failures would be noticed: error reporting, logging, alerting, job monitoring, third-party call handling. |
 
 Findings and targets are scaled to the team (solo, small team, larger team) and the product stage (validating, building the real thing, scaling workloads).
@@ -46,7 +46,7 @@ Start with the full audit and give it whatever you have, a live URL, a repo path
 What happens:
 
 1. **Intake.** One batch of questions up front: who signs in and as which role, team size and product stage, where production alerts go, a prefix for finding IDs, and where the report should go (chat, or a Notion page or doc you name). It checks which scanners are installed and asks before installing any.
-2. **Plan.** It says which audits apply and why. Supabase runs only if the app uses it; CI only if there is pipeline config.
+2. **Plan.** It says which audits apply and why. Supabase runs only if the app uses it. CI runs whenever there is a repo; a repo with no pipeline scores 0.
 3. **Browser audit.** It pauses for **you** to sign in to the app in the browser. It never logs in for you, and it stops and tells you if any step would save, send or change something.
 4. **Code, Supabase, CI and observability audits** run read-only. This is the long part and launches several subagents.
 5. **Report.** One merged report: architecture and auth overview, an endpoint map ranked by risk, findings rated High, Medium or Low with fixes, architecture suggestions for your stage, what's working well, and a **To verify** list of dashboard and SQL checks for you to run and paste back.
@@ -70,6 +70,16 @@ Each audit also works alone when you only need one view:
 ```
 
 The levelled audits (Supabase, CI, observability) score 0 to 5 and compare that with the level that suits your team and stage, so a solo founder isn't marked down for lacking what a larger team needs.
+
+CI is scored on three pillars, each 0 to 5 with its own target, and the CI level is the lowest of them:
+
+| Pillar | What it covers | Target: solo / small team / larger team |
+|---|---|---|
+| Gates | Hooks and CI: format, lint, typecheck and tests across every package, then migrations on a fresh database, a build output audit and automated PR review | 3 / 4 / 4 |
+| Security | Alerts, gitleaks in CI and on commit, dependency audits, Dependabot for every ecosystem, exact pins, then static analysis and fixing High alerts within 30 days | 2 / 3 / 4 |
+| Delivery | From host-built deploys up to one artifact promoted through a pre-production environment, a manual production trigger and a rollback path | 3 / 4 / 5 |
+
+The scorecard shows the weakest pillar; the CI section shows all three and which check caps each.
 
 ## Safety
 
