@@ -10,7 +10,7 @@ Stages S1, S2 and S3 are defined in `../../full/references/rules.md`.
 |---|---|---|---|---|---|---|
 | C1 | Lint | `eslint`, `biome`, `ruff`, `sqlfluff`, `golangci-lint` or similar in a workflow step; no rule switched off repo-wide without a reason (for example `react-hooks/exhaustive-deps`); a large warning backlog noted with its count | Expected | Expected | Expected | Low to Medium |
 | C2 | Format check | `prettier --check`, `black --check`, `gofmt -l` | Expected | Expected | Expected | Low |
-| C3 | Typecheck | `tsc --noEmit`, `mypy`, `pyright`, for every language and every package (partial if only some packages, for example the web app but not shared packages; fail for a mostly Python repo with no Python type checking) | Expected | Expected | Expected | Medium |
+| C3 | Typecheck | `tsc --noEmit`, `mypy`, `pyright`, for every language and every package (partial if only some packages, for example the web app but not shared packages; pass with a Low note when only a small tooling or config package with its own tests is left out; fail for a mostly Python repo with no Python type checking) | Expected | Expected | Expected | Medium |
 | C4 | Tests | test command run in CI, failing the job | Expected | Expected | Expected | Medium |
 | C5 | Dependency audit | `npm audit`, `pip-audit`, `osv-scanner` as a step that fails the job, for every ecosystem; record the threshold (every severity, or high and above). `npm ci` and `npm install --no-audit` do not audit, so an install step is not an audit | Expected | Expected | Expected | Medium |
 | C6 | Build | the app builds in CI (not only on the host) | Expected | Expected | Expected | Medium |
@@ -49,7 +49,7 @@ Checks that run on a developer's machine before CI sees the code. They catch pro
 | H1 | Hook manager | `lefthook.yml`, `.husky/`, `.pre-commit-config.yaml`, `simple-git-hooks` | Optional | Expected | Expected | Low |
 | H2 | Installs itself | a `prepare` or `postinstall` script installs the hooks on install (and in generated apps, for templates); `pre-commit` needing a manual `pre-commit install` is partial | Expected if H1 | Expected | Expected | Low |
 | H3 | Secret scan on commit | `gitleaks` on staged changes that fails the commit; partial if it skips when gitleaks is not installed; fail if only a private-key pattern is checked | Expected | Expected | Expected | Low (Medium if C26 also fails) |
-| H4 | Format, lint and typecheck | on commit or push, across every package (partial if some packages are skipped) | Expected if H1 | Expected | Expected | Low |
+| H4 | Format, lint and typecheck | on commit or push, across every package (partial if some packages are skipped; pass with a Low note when only a small tooling or config package is skipped) | Expected if H1 | Expected | Expected | Low |
 | H5 | Tests | on push; leaving tests to CI is fine (n/a, not a gap) | Optional | Optional | Optional | none |
 
 ## Severity cues

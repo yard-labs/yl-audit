@@ -40,9 +40,11 @@ Score three pillars 0 to 5. Each level needs everything below it. The **CI level
 | 0 | No gates |
 | 1 | Some checks run, but they do not fail the job, or not on every push |
 | 2 | Core gates fail the job on every push to main (and every PR if used): format, lint, typecheck, tests, build. Some languages or packages may be missing |
-| 3 | Core gates cover every language and package; every job has a timeout; hooks install themselves and run format, lint and typecheck |
+| 3 | Core gates cover every language and package that holds application code (the app, its jobs, shared libraries); every job has a timeout; hooks install themselves and run format, lint and typecheck |
 | 4 | Plus **migrations** tested on a fresh database, and the **build output audited** for leaked secrets. A schema drift check or contract is a plus, not required. Migrations are n/a with no database. The build output audit is n/a with no client bundle, and met with no scan when nothing environment-specific is baked into the build (config served at runtime from an allowlist of public values; see C30) |
 | 5 | Plus an **automated review on every PR** (n/a if no PRs), required before merge, and nothing weakened: no `continue-on-error`, skipped or deselected tests, or rules switched off repo-wide without a reason |
+
+A small tooling or config package (infra-as-code, scripts) that has its own tests but misses a gate is a Low finding, not a cap.
 
 **Security** (what finds and fixes leaked secrets and known holes)
 
