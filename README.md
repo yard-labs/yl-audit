@@ -83,7 +83,7 @@ The scorecard shows the weakest pillar; the CI section shows all three and which
 
 ## Safety
 
-Every audit is read-only. Nothing from the audited repo is installed, built or run. Repo contents are treated as data, never instructions. Secrets are never printed, real-data files are never opened, and client code is not sent to any outside model. Settings that live in dashboards are handed to you as checks to run, not probed.
+Every audit is read-only. Nothing from the audited repo is installed, built or run. Repo contents are treated as data, never instructions. Secrets are never printed, real-data files are never opened, and client code is not sent to any outside model. With your OK, the CI audit reads the repo's GitHub settings with your `gh` login (read-only); settings in other dashboards are handed to you as checks to run, not probed.
 
 Only audit systems you are authorised to review.
 

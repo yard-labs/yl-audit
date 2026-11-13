@@ -26,7 +26,7 @@ Stages S1, S2 and S3 are defined in `../../full/references/rules.md`.
 | C16 | Same artifact to prod | production deploys the artifact proven in the pre-production environment, not a rebuild | Expected | Expected | Expected | Medium |
 | C17 | Rollback | previous version kept; documented or scripted rollback | Expected | Expected | Expected | Low to Medium |
 | C18 | Pre-deploy migrations | migration step runs automatically before the app deploy, dedicated credential, applied-state tracked | Expected | Expected | Expected | Medium |
-| C19 | Migration safety | expand then contract; backward compatible with the code still running; tested on a disposable DB in CI; drift check | Expected | Expected | Expected | Low to Medium |
+| C19 | Migration safety | expand then contract; backward compatible with the code still running; tested on a disposable DB in CI. A schema-versus-migrations drift check is a plus, not required: tests running against the migrated database already catch most drift | Expected | Expected | Expected | Low to Medium |
 | C20 | Feature flags | a flag library or config, a kill switch, deploy decoupled from release | Optional | Optional | Expected where releases are risky | none (a win when present) |
 | C21 | Environment variables | config read from env; per-environment values; example file; required values validated at startup; no hard-coded config | Expected | Expected | Expected | Medium (hard-coded secrets: High) |
 | C22 | Secrets handling | environment-scoped secrets, not repo-wide where avoidable; none in workflow inputs, logs or the repo | Expected | Expected | Expected | High if exposed |
@@ -37,7 +37,7 @@ Stages S1, S2 and S3 are defined in `../../full/references/rules.md`.
 | C27 | Static analysis | `semgrep` or CodeQL in a workflow | Optional | Optional | Expected | Low |
 | C28 | Runtime versions agree | one Node, Python or other runtime version across CI workflows, deploy workflows, Dockerfiles, `.nvmrc`, `.python-version` and `engines` | Expected | Expected | Expected | Low (Medium if production runs a version CI never tests) |
 | C29 | Exact dependency pins | manifests use exact versions, not `^` or `~` ranges; lockfile committed; CI installs with `npm ci` or equivalent. Count ranges against the total (for example 75 of 82) | Expected | Expected | Expected | Low |
-| C30 | Build output audit | where a client bundle is built, CI scans it for leaked secrets or server-only environment values | Expected where client env vars exist | Expected | Expected | Low to Medium |
+| C30 | Build output audit | where environment values are baked into a client bundle at build time (`NEXT_PUBLIC_*`, `VITE_*`, build args), CI scans the output for leaked secrets or server-only values. **Pass without a scan** when the build takes no config: images built env-agnostic, with browser config served at runtime from an explicit allowlist of public values. Cite the allowlist; that design removes the risk a scan looks for | Expected where client env vars are baked in | Expected where baked in | Expected where baked in | Low to Medium |
 | C31 | Ignore rules | `.gitignore` covers `.env*`, build output and tool temp folders (for example `supabase/.temp`, `.vercel`) | Expected | Expected | Expected | Low |
 
 ## Local git hooks
